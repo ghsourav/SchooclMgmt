@@ -1,0 +1,148 @@
+{{> dashboardnav}}
+{{> dashboardleftnav}}
+
+{{#if_eq user.dataValues.dept_user_type 'ADMIN'}}
+
+<!-- Page Content Start -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-6 mt-4">
+                    <div class="card-box">
+                        
+                        <form class="form-horizontal" action="/student_create" method="post">
+                            <input type="hidden" name="student_add_by_admin" value="{{id}}">
+                            <div class="form-group row"><label for="inputEmail3" class="col-sm-3 col-form-label">first
+                                    Name</label>
+                                <div class="col-sm-9">
+                                    <input type="name" parsley-trigger="change" name="firstName" class="form-control parsley-error" 
+                                        placeholder="Enter First Name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label for="inputEmail3" class="col-sm-3  col-form-label">last
+                                    Name</label>
+                                <div class="col-sm-9">
+                                    <input type="name" parsley-trigger="change" name="lastName" class="form-control parsley-error" 
+                                        placeholder="Enter Last Name" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label for="inputEmail3"
+                                    class="col-sm-3 col-form-label">Gender</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control"  name="gender" required>
+                                        <option>Select</option>
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                        <option value="OTHERS">Others</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label for="inputEmail3"
+                                    class="col-sm-3 col-form-label">Guardian Name</label>
+                                <div class="col-sm-9">
+                                    <input type="name" name="guardianName" class="form-control" 
+                                        placeholder="Enter  guardianName" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label for="inputEmail3"
+                                    class="col-sm-3 col-form-label">Address</label>
+                                <div class="col-sm-9">
+                                    <textarea type="name" name="Address" class="form-control" 
+                                        placeholder="Enter  Address" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label for="inputEmail3"
+                                    class="col-sm-3 col-form-label">Username</label>
+                                <div class="col-sm-9">
+                                    <input type="name" name="username" class="form-control" 
+                                        placeholder="Enter  Username" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label for="inputEmail3"
+                                    class="col-sm-3 col-form-label">Mobile</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="contact" class="form-control" 
+                                        placeholder="Enter  Mobile" required>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group row"><label for="emailAddress"
+                                    class="col-sm-3 col-form-label">Email</label>
+                                <div class="col-sm-9">
+                                    <input type="email" parsley-trigger="change" name="email" class="form-control parsley-error" 
+                                        placeholder="Enter  email" id="emailAddress" required>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                            <div class="form-group mb-0 justify-content-end row">
+                                <div class="col-sm-9"><button type="submit"
+                                        class="btn btn-info waves-effect waves-light">Add
+                                    </button></div>
+                            </div>
+                        </form>
+                    </div><!-- end card-box -->
+                </div><!-- end col -->
+
+                <div class="col-md-6 mt-4">
+                    <div class="card-box">
+                        <table class="table table-dark mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Guardian Name</th>
+                                    <th>Verify</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                {{#each student}}
+                                <tr>
+                                    <td>{{this.dataValues.firstName}} {{this.dataValues.lastName}}</td>
+                                    <td> {{this.dataValues.guardianName}}</td>
+
+                                    {{#if this.dataValues.birth_certificate}}
+                                    <td> <i class=" mdi mdi-verified text-info"></i>User Waiting for Verification</td>
+                                    {{else}}
+                                    <td> <i class="mdi mdi-exclamation text-warning"></i>Not Verified</td>
+                                    {{/if}}
+                                </tr>
+                                {{/each}}
+                                {{#each studentVerifyed}}
+                                <tr>
+                                    <td>{{this.dataValues.firstName}} {{this.dataValues.lastName}}</td>
+                                    <td> {{this.dataValues.guardianName}}</td>
+
+                                    <td> <i class=" mdi mdi-verified text-success"></i> Verified</td>
+                                   
+                                </tr>
+                                {{/each}}
+                            </tbody>
+
+                        </table>
+
+
+                    </div><!-- end card-box -->
+                </div><!-- end col -->
+            </div>
+        </div>
+    </div>
+</div>
+{{/if_eq}}

@@ -1,0 +1,64 @@
+{{> dashboardnav}}
+{{> dashboardleftnav}}
+{{#if_eq user.dataValues.dept_user_type 'ADMIN'}}
+<!-- Page Content Start -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row ">
+
+                {{!-- <div class="col-md-6 mt-4">
+                    <div class="card-box">
+
+                    </div><!-- end card-box -->
+                </div><!-- end col --> --}}
+
+                <div class="col-md-12 mt-4">
+                    <div class="card-box">
+                        <h4>All Transections</h4>
+                        <table class="table  mb-0">
+                            <thead>
+                                <th>Id</th>
+                                <th>Razorpay Payment Id</th>
+                                <th>Student Name</th>
+                                <th>Claas</th>
+                                <th>Admission Year</th>
+                                <th>Amount</th>
+                                <th>Payment Status</th>
+                            </thead>
+                            <tbody>
+                                {{#each AllTrx}}
+                                <tr>
+                                    <td>{{this.dataValues.id}}</td>
+                                    <td>{{this.dataValues.razorpay_payment_id}}</td>
+                                    <td>{{this.dataValues.School_dept_User.dataValues.firstName}} {{this.dataValues.School_dept_User.dataValues.lastName}}</td>
+                                    <td>{{this.dataValues.Yearlyfess.dataValues.Class.dataValues.name}}</td>
+                                    <td>{{this.dataValues.Yearlyfess.dataValues.Year}}</td>
+                                    
+                                    <td>{{this.dataValues.cost}}</td>
+                                    
+                                    <td>
+                                        {{#if this.dataValues.razorpay_error_code}}
+                                        <span class="badge badge-warning">Failed</span>
+                                        {{else}}
+                                        <span class="badge badge-success">Success</span>
+                                        {{/if}}
+                                    </td>
+                                   
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div><!-- end card-box -->
+                </div>
+
+
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{/if_eq}}

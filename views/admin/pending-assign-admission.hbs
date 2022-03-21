@@ -1,0 +1,158 @@
+{{> dashboardnav}}
+{{> dashboardleftnav}}
+{{#if_eq user.dataValues.dept_user_type 'ADMIN'}}
+<!-- Page Content Start -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row ">
+
+                {{!-- <div class="col-md-6 mt-4">
+                    <div class="card-box">
+
+                    </div><!-- end card-box -->
+                </div><!-- end col --> --}}
+
+                <div class="col-md-12 mt-4">
+                    <div class="card-box">
+                        {{#if message}}
+                        <div class="alert alert-secondary alert-dismissible fade show" role="alert"><button
+                                type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button> {{message}}</div>
+            
+                        {{/if}}
+
+
+                        <h4>Pending Section/Roll No Assign</h4>
+                        <table class="table  mb-0">
+                            <thead>
+                                <th>Id</th>
+                                <th>Student Name</th>
+                                <th>Claas</th>
+                                <th>Assign Class</th>
+                                <th>Admission Year</th>
+                                <th>Amount</th>
+                                <th>Invoice</th>
+                                <th>Is Roll Assign</th>
+                            </thead>
+                            <tbody>
+                                {{#each AssignClass}}
+                                <tr>
+                                    <td>{{this.dataValues.id}}</td>
+
+                                    <td>{{this.dataValues.School_dept_User.dataValues.firstName}}
+                                        {{this.dataValues.School_dept_User.dataValues.lastName}}</td>
+                                    <td>{{this.dataValues.Yearlyfess.dataValues.Class.dataValues.name}}</td>
+                                    <td><button class="assignmodal btn btn-outline-primary " data-this-id="{{this.dataValues.id}}"
+                                            data-student-id="{{this.dataValues.School_dept_User.dataValues.id}}"
+                                            data-admission-year="{{this.dataValues.Yearlyfess.dataValues.Year}}"
+                                            data-class-id="{{this.dataValues.Yearlyfess.dataValues.Class.dataValues.id}}"
+                                            data-toggle="modal" data-target=".bs-example-modal-sm">Assign</button>
+                                    <td>{{this.dataValues.Yearlyfess.dataValues.Year}}</td>
+                                    <td>{{this.dataValues.cost}}</td>
+                                    <td><a target="_blank" class="btn btn-info"
+                                            href="{{this.dataValues.invoice_file}}">View</a></td>
+                                    <td>
+                                        {{#if this.dataValues.ClassAssignForStudentsID}}
+                                        <span class="badge badge-success">Assign Roll no</span>
+                                        <p>Section:-
+                                            {{this.dataValues.ClassAssignForStudent.section.dataValues.name}}<br>
+                                            Roll No:- {{this.dataValues.ClassAssignForStudent.dataValues.StudentRollNo}}
+                                        </p>
+                                        {{else}}
+                                        <span class="badge badge-warning">Roll no not Assign </span>
+                                        {{/if}}
+                                    </td>
+
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div><!-- end card-box -->
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Assign Student To Class</h4><button type="button"
+                    class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+                <!--Form Start-->
+                <form action="/ClassAssignForStudent" method="POST" novalidate="">
+                    <p>For Class </p>
+                    <div class="form-group"><label for="userName">Admission Year<span
+                                class="text-danger">*</span></label>
+                        <input type="text" parsley-trigger="change" required="" placeholder="Enter user name"
+                            class="form-control" id="AdmissionYear" disabled>
+                    </div>
+
+                    <div class="form-group"><label for="userName">Section<span class="text-danger">*</span></label>
+                        <select class="form-control" id="SectionId" name="SectionId">
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group"><label for="userName">Roll No<span class="text-danger">*</span></label>
+                        <input type="number" name="StudentRollNo" parsley-trigger="change" required=""
+                            placeholder="Enter Roll Number" class="form-control" id="RollNo">
+                    </div>
+
+                    <input type="hidden" name="BatchYear" id="AdmissionYearHidden">
+                    <input type="hidden" id="StudentID" name="StudentId">
+                    <input type="hidden" id="ThisId" name="ThisRowID">
+                    <div class="form-group text-right m-b-0"><button class="btn btn-primary waves-effect waves-light"
+                            type="submit">Submit</button> </div>
+                </form>
+
+
+                <!--Form End-->
+
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $(".assignmodal").on("click", function () {
+        let year = $(this).attr("data-admission-year");
+        let Classid = $(this).attr("data-class-id");
+        let Student = $(this).attr("data-student-id")
+        let ThisRowid = $(this).attr("data-this-id")
+        $('#AdmissionYear').val(year)
+        $('#StudentID').val(Student)
+        $('#AdmissionYearHidden').val(year)
+        $('#ThisId').val(ThisRowid)
+        let option = ''
+
+        $.ajax({
+            url: "/section_find/" + Classid,
+            method: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                console.log(data)
+                for (i = 0; i < data.length; i++) {
+                    option += " <option value=" + data[i].id + ">" + data[i].name + "</option>"
+                }
+                $("#SectionId").html(option)
+
+            }
+        })
+
+    })
+</script>
+
+{{/if_eq}}

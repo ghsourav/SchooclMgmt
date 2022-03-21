@@ -1,0 +1,58 @@
+{{> dashboardnav}}
+{{> dashboardleftnav}}
+{{#if_eq user.dataValues.dept_user_type 'STUDENT'}}
+<!-- Page Content Start -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <section class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="card-box">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Class<br> Name</th>
+                                    <th>Year</th>
+                                    <th>Payment</th>
+                                    <th>Invoice</th>
+                                    <th>Payment ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        let user ='{{user.dataValues.id}}'
+        let trxdata = ''
+
+        $.ajax({
+            url:"/admission_history/"+user,
+            method:"GET",
+            type:"JSON",
+            success:(data)=>{
+                if (data){
+                    x = data
+                }else{
+                    x=''
+                }
+                console.log(x)
+
+                for(i = 0;i < x.length ; i++){
+                    trxdata += "<tr><td>"+ x[i].Yearlyfess.Class.name +"</td><td>"+ x[i].Yearlyfess.Year +"</td><td>"+ x[i].cost+"</td><td><a href="+ x[i].invoice_file +">Download</a></td><td>" +x[i].razorpay_payment_id +"</td></tr>"
+                }
+                $("#tbody").html(trxdata);
+            }
+        })
+    });
+</script>
+
+{{/if_eq}}

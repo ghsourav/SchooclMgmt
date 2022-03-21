@@ -1,0 +1,249 @@
+{{> dashboardnav}}
+{{> dashboardleftnav}}
+{{#if_eq user.dataValues.dept_user_type 'STUDENT'}}
+<!-- Page Content Start -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row ">
+
+                <div class="col-md-6 mt-4">
+                    <div class="card-box">
+                        <p> Name :- {{fname}} {{lname}}
+                            {{#if_eq user.dataValues.isActive false}} <span
+                                class="mdi mdi-alert-box text-warning"></span> {{/if_eq}}
+                            {{#if_eq user.dataValues.isActive true}} <span
+                                class=" mdi mdi-verified text-success"></span> {{/if_eq}}
+                        </p>
+                        <main class="row" id="Curent_Admission"></main>
+                        <p> Email:-{{user.dataValues.email}}</p>
+                        <p> Gender: - {{user.dataValues.gender}}</p>
+                        <p> Guardian Name:- {{user.dataValues.guardianName}}</p>
+                        <p>Contact:- {{user.dataValues.contact}}</p>
+
+                        <section class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-info btn-sm" data-toggle="modal"
+                                    data-target=".bs-edituser-modal-sm">Edit</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-success btn-sm" data-toggle="modal"
+                                    data-target=".bs-passwordchange-modal-sm">Change Password</button>
+                            </div>
+                        </section>
+
+                    </div><!-- end card-box -->
+                </div><!-- end col -->
+
+                <div class="col-md-6 mt-4">
+                    <div class="card-box">
+                        <form class="form-horizontal" action="/upload" method="POST" enctype="multipart/form-data">
+                            <ul class="list-unstyled menu-left mb-0">
+                                <input type="hidden" name="userId" value="{{user.dataValues.id}}">
+                                <div class="form-group row"><label for="inputEmail3"
+                                        class="col-sm-3 col-form-label">Upload Birth Certificate</label>
+                                    <div class="col-sm-10"><input type="file" class="form-control"
+                                            name="birth_certificate"></div>
+                                </div>
+                                <div class="form-group mb-0 justify-content-end row">
+                                    <div class="col-sm-9"><button type="submit"
+                                            class="btn btn-info waves-effect waves-light">Upload Certificate
+                                        </button></div>
+                                </div>
+                        </form>
+
+                        <br>
+                        <section>
+                            <main id="view"></main>
+                            
+                        </section>
+                    </div>
+                </div><!-- end col -->
+
+
+                <div class="col-md-6 mt-4">
+                   
+
+                    
+                    <div class="card-box">
+                        <h4>Admission History</h4>
+
+                        <table class="table">
+                            <thead>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Batch</th>
+                                <th>Roll No</th>
+                            </thead>
+                            <tbody id="Admission_History">
+
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-passwordchange-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Change Password</h4><button type="button" class="close"
+                    data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                {{!-- Start Here --}}
+                <form class="" method="POST" action="/changeuserpassword/{{user.dataValues.id}}" novalidate="">
+
+                    <div class="form-group">
+                        <div><input type="password" id="pass2" class="form-control" required="" name="password" placeholder="Password">
+                        </div>
+                        <div class="mt-2"><input type="password" class="form-control" required=""
+                                data-parsley-equalto="#pass2" placeholder="Re-Type Password"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div><button type="submit" class="btn btn-primary waves-effect waves-light">Change Password</button>
+                        </div>
+                    </div>
+                </form>
+                {{!-- End Here --}}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade bs-edituser-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Edit User</h4><button type="button" class="close"
+                    data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+
+            <div class="modal-body">
+
+                <form method="post" action="/profileupadate/{{user.dataValues.id}}">
+                    <div class="form-group">
+                        <label for="FirstName">First Name</label>
+                        <input type="name" class="form-control" name="firstName" value="{{fname}}"
+                            placeholder="Enter First Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="name" class="form-control" name="lastName" value="{{lname}}"
+                            placeholder="Enter Last Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="GName">Guardian Name</label>
+                        <input type="name" class="form-control" name="guardianName"
+                            value="{{user.dataValues.guardianName}}" placeholder="Enter Guardian Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">Contact</label>
+                        <input type="number" class="form-control" name="contact" value="{{user.dataValues.contact}}"
+                            id="email" placeholder="Enter mobile no" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">Gender</label>
+                        <select class="form-control" name="gender">
+                            <option value="{{user.dataValues.gender}}">{{user.dataValues.gender}}</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="OTHERS">Others</option>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <p></p>
+                        <input type="email" class="form-control" name="email" value="{{user.dataValues.email}}"
+                            id="email" placeholder="Enter email" disabled>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+{{#if user.dataValues.birth_certificate}}
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "getCertificate/{{user.dataValues.birth_certificate}}",
+            method: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                if (data.mime_type == 'image/jpeg' || data.mime_type == 'image/png') {
+                    $("#view").html(`<img width='200' src="${data.pathlocation}"><br><br><a href="${data.pathlocation}">View Birth Certificate</a>`)
+                } else {
+                    $("#view").html(`<p>${data.birthcertificate}<p><a href="${data.pathlocation}">View Birth Certificate</a>`)
+                }
+            }
+        })
+
+
+        let student = ''
+        $.ajax({
+            url: "studentrollno/{{user.dataValues.id}}",
+            method: "GET",
+            dataType: "JSON",
+            success: function (data) {
+                if(data){
+                    x = data
+                }else{
+                    x=''
+                }
+                for(i = 0;i < x.length ; i++){
+                  student += `<tr><td>${x[i].section.Class.name}</td><td>${x[i].section.name}</td><td>${x[i].BatchYear}</td><td>${x[i].StudentRollNo}</td></tr>`
+
+                }
+                $("#Admission_History").html(student);
+            }
+        })
+    });
+
+    console.log('{{user.dataValues.StudentClassAssignDetails}}')
+    let a=''
+    $.ajax({
+        url:"/student_current_roll_no/{{user.dataValues.StudentClassAssignDetails}}",
+        method:"GET",
+        dataType:"JSON",
+        success: function(data){
+            console.log(data)
+            if(data){
+                    x = data
+                }else{
+                    x=''
+                }
+                for(i = 0;i < x.length ; i++){
+                    a += `<div class='col-md-3'><p> Class:- ${x[i].section.Class.name} </p></div><div class='col-md-3'> Section:- ${x[i].section.name}</div><div class='col-md-3'> Bath:- ${x[i].BatchYear}</div><div class='col-md-3'>Roll No:- ${x[i].StudentRollNo}</div>`
+                }
+            $("#Curent_Admission").html(a)
+
+        }
+    })
+</script>
+{{/if}}
+
+
+{{/if_eq}}

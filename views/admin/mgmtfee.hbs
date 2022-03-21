@@ -1,0 +1,237 @@
+{{> dashboardnav}}
+{{> dashboardleftnav}}
+
+{{#if_eq user.dataValues.dept_user_type 'ADMIN'}}
+
+<!-- Page Content Start -->
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-12 mt-4">
+                    <div class="card-box">
+                        <section class="row">
+                            <div class="col-md-10">
+                                <h4 class="m-t-0 m-b-30 header-title">Fees Managemt</h4>
+                            </div>
+                            
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-outline-success btn-rounded w-md"
+                                    data-toggle="modal" data-target=".bs-example-modal-sm">Add Fees</button>
+                            </div>
+
+                            {{#if message}}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert"><button
+                                    type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">×</span></button> {{message}}</div>
+                            {{/if}}
+
+                            <p>{{message}}</p>
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Class Name</th>
+                                        <th>Year</th>
+                                        <th>Cost</th>
+                                        <th>Update By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {{#each Feelist}}
+                                    <tr>
+                                        <td>{{this.dataValues.Class.dataValues.name}}</td>
+                                        <td>{{this.dataValues.Year}}</td>
+                                        <td>{{this.dataValues.cost}}</td>
+                                        <td>{{this.dataValues.School_dept_User.dataValues.firstName}}
+                                            {{this.dataValues.School_dept_User.dataValues.lastName}}
+                                        </td>
+                                        <td>
+                                            <button class="updatefee btn btn-outline-primary btn-rounded w-md" data-toggle="modal"
+                                                data-target=".bs-example-modal" data-id="{{this.dataValues.id}}"
+                                                data-year="{{this.dataValues.Year}}"
+                                                data-cost="{{this.dataValues.cost}}">Edit</button>
+                                        </td>
+                                    </tr>
+
+                                    {{/each}}
+
+
+                                </tbody>
+                            </table>
+                        </section>
+
+                    </div><!-- end card-box -->
+                </div><!-- end col -->
+
+                {{!-- <div class="col-md-12 mt-4">
+                    <div class="card-box">
+
+
+                    </div><!-- end card-box -->
+                </div><!-- end col --> --}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Small modal</h4><button type="button" class="close"
+                    data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <selction>
+                    <div class="form-group">
+                        <label for="Class">Class</label>
+                        <select class="form-control" id="ClassId">
+                            {{#each clas}}
+                            <option value="{{this.dataValues.id}}">{{this.dataValues.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Year">Year</label>
+                        <input type="number" class="form-control" id="year" name="Year" placeholder="Enter Year">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cost">Cost for Year</label>
+                        <input type="number" class="form-control" id="cost" name="cost" placeholder="Enter Amount">
+                    </div>
+                    <input type="hidden" name="last_update_by" id="userid" value="{{user.dataValues.id}}">
+                    <input type="hidden" id="feeid">
+
+                    <button type="submit" id="addFees" class="btn btn-primary">Submit</button>
+                </selction>
+
+
+
+
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade bs-example-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="mySmallModalLabel">Small modal</h4><button type="button" class="close"
+                    data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <selction>
+                    {{!-- <div class="form-group">
+                        <label for="Class">Class</label>
+                        <select class="form-control" id="ClassId">
+                            {{#each clas}}
+                            <option value="{{this.dataValues.id}}">{{this.dataValues.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div> --}}
+
+                    <div class="form-group">
+                        <label for="Year">Year</label>
+                        <input type="number" class="form-control Updateyear" name="Year" placeholder="Enter Year"
+                            disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cost">Cost for Year</label>
+                        <input type="number" id="#UpdateCost" class="form-control UpdateCost" id="cost" name="cost"
+                            placeholder="Enter Amount">
+                    </div>
+                    <input type="hidden" name="last_update_by" id="userid" value="{{user.dataValues.id}}">
+
+
+                    <button type="submit" id="Update-Fees" class="btn btn-primary">Submit</button>
+
+
+                </selction>
+
+
+
+
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script>
+    $("#addFees").on("click", function () {
+        let classId = $("#ClassId").val();
+        let year = $("#year").val();
+        let Cost = $("#cost").val();
+        let UserId = $("#userid").val();
+
+
+
+
+        $.ajax({
+            url: "/addclassfees",
+            method: "POST",
+            data: { ClassID: classId, Year: year, cost: Cost, last_update_by: UserId, AddedBy: UserId },
+            success: (data) => {
+            }
+        })
+
+        location.reload();
+
+
+    })
+
+    $(".updatefee").on("click", function () {
+        let feeid = $(this).attr("data-id");
+        let year = $(this).attr('data-year');
+        let Old_cost = $(this).attr('data-cost');
+        console.log(year)
+        $('.Updateyear').val(year)
+        $('.UpdateCost').val(Old_cost)
+        $("#feeid").val(feeid)
+    })
+
+    $("#Update-Fees").on("click", function () {
+        let Upadte_cost = $('.UpdateCost').val();
+        let userId = "{{user.dataValues.id}}";
+        let feeid = $("#feeid").val();
+        console.log(Upadte_cost)
+        console.log(userId)
+        console.log(feeid)
+        $.ajax({
+            url: "/updateclassfee/" + feeid,
+            method: "POST",
+            data: { cost: Upadte_cost, last_update_by: userId },
+            success: function (data) {
+                console.log(data)
+            }
+        })
+
+
+
+        location.reload();
+    })
+</script>
+{{/if_eq}}
