@@ -16,7 +16,7 @@ var path = require('path');
 const fs = require("fs");
 const invoice = fs.readFileSync('./views/client/invoice.hbs', 'utf8');
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey('Api Key Here');
 const pdf2base64 = require('pdf-to-base64');
 const pdf = require('dynamic-html-pdf');
 
